@@ -1,0 +1,42 @@
+<h1>{{ question.title }}</h1>
+<p>{{ question.body }}</p>
+<p>{{ question.pub_date|date:"d.m.Y"}}</p>
+<p>{{ question.author.username }}</p>
+
+<br />
+<hr />
+<h1>Answers</h1>
+<br />
+
+{% if answers %}
+    {% for answer in answers %}
+        {% if answer.accepted %}
+            <p><b>ACCEPTED</b></p>
+        {% endif %}
+        <p>{{ answer.body }}</p>
+        <p>{{ answer.pub_date|date:"d.m.Y" }}</p>
+        <p>{{ answer.author.username }}</p>
+
+        {% if user.username == question.author.username %}
+            <p><a href="{% url 'accept-answer' answer.pk %}">accept</a></p>
+        {% endif %}
+
+        <br />
+        <br />
+    {% endfor %}
+{% else %}
+    <p>Ты будешь первым</p>
+{% endif %}
+
+
+{% if user.is_authenticated %}
+    <br />
+    <hr />
+    <br />
+    <form action="{% url 'post-answer' question.pk %}" method="post">
+        {% csrf_token %}
+        <textarea name="body"></textarea>
+        <br />
+        <button type="submit">Post</button>
+    </form>
+{% endif %}

@@ -1,0 +1,14 @@
+{% if user.is_authenticated %}
+    <form action="{% url 'post-question' %}" method="post">
+        {% csrf_token %}
+        <label>Title: </label>
+        <input type="text" name="title">
+        <br />
+        <label>Body: </label>
+        <textarea name="body"></textarea>
+        <br />
+        <button type="submit">Post question</button>
+    </form>
+{% else %}
+    <p>Go away!</p>
+{% endif %}
